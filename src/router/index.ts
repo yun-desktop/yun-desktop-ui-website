@@ -3,26 +3,39 @@ import Home from '../views/pages/Home.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Home',
+    path: '/home',
+    name: 'home',
     component: Home
   },
   {
     path: '/components',
-    name: 'Components',
-    component: () => import('../views/pages/Component.vue')
+    name: 'components',
+    component: () => import('../views/pages/Component.vue'),
+    children: [
+      { path: '' , name: 'components-default', redirect: { name: 'input' } },
+      {
+        path: 'input',
+        name: 'input',
+        component: () => import('../views/pages/com-pages/Input.vue')
+      },
+      {
+        path: 'button',
+        name: 'button',
+        component: () => import('../views/pages/com-pages/Button.vue')
+      }
+    ]
   },
   {
     path: '/documents',
-    name: 'Documents',
+    name: 'documents',
     component: () => import('../views/pages/Document.vue')
   },
+
+  /** 默认路由重定向 */
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-
+    redirect: { name: 'home' }
+  }
 ]
 
 const router = createRouter({
