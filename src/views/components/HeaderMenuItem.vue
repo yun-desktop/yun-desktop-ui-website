@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, Prop } from 'vue-property-decorator'
+import { Vue, Options, Prop, Emit } from 'vue-property-decorator'
 
 @Options({})
 export default class HeaderMenuItem extends Vue{
@@ -94,7 +94,7 @@ export default class HeaderMenuItem extends Vue{
     top: 0;
     width: 80%;
     height: 4px;
-    background: $low-light;
+    background: $high-light;
   }
 }
 

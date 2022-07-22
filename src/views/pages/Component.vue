@@ -10,7 +10,7 @@
         <h4>Input</h4>
         <input style="cursor: pointer;" disabled type="text" placeholder="请输入内容">
       </div>
-      <!-- Input -->
+      <!-- Button -->
       <div class="com-button" @click="$router.push({ name: 'button' })">
         <h4>Button</h4>
         <button style="pointer-events: none;" disabled>按钮</button>
@@ -34,6 +34,7 @@ export default class Components extends Vue {}
   align-items: center;
   height: calc(100vh - #{$nav-height});
 }
+
 .line {
   width: 10px;
   height: 94%;

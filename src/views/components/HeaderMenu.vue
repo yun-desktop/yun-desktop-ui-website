@@ -28,7 +28,8 @@ export default class HeaderMenu extends Vue {}
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 180px;
+    padding-left: 20px;
+    padding-right: 20px;
     height: 80%;
     border-right: 1px solid $low-light;
   }

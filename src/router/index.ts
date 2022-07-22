@@ -28,7 +28,20 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/documents',
     name: 'documents',
-    component: () => import('../views/pages/Document.vue')
+    component: () => import('../views/pages/Document.vue'),
+    children: [
+      { path: '', name: 'document-default', redirect: {name: 'introduce'}},
+      {
+        path: 'introduce',
+        name: 'introduce',
+        component: () => import('../views/pages/doc-pages/Introduce.vue')
+      },
+      {
+        path: 'install',
+        name: 'install',
+        component: () => import('../views/pages/doc-pages/Install.vue')
+      }
+    ]
   },
 
   /** 默认路由重定向 */
