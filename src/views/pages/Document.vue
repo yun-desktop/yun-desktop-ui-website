@@ -3,7 +3,7 @@
     <router-view class="document-sub-page" />
 
     <ul class="document-list">
-      <list-item 
+      <!-- <list-item 
         v-for="item in itemList"
         :key="item.URL"
         :URL="item.URL"
@@ -13,7 +13,7 @@
         group="document"
       >
         <h5 style="margin: 0;">{{item.content}}</h5>
-      </list-item>
+      </list-item> -->
     </ul>
   </div>
 </template>
