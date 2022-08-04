@@ -27,20 +27,22 @@
       <list-item
         class="header-list-item"
         group="header"
-        URL="/documents"
-        :subHoverStyle="{ position: 'absolute', left: '0', top: '0', backgroundColor: '#8197deb2', width: '100%', height: '4px' }"
-        :subSelectStyle="{ position: 'absolute', left: '0', top: '0', backgroundColor: '#8197deb2', width: '100%', height: '4px' }"
+        URL="/components"
+        :subNormalStyle="{ position: 'absolute', left: '50%', top: '0', width: '0', height: '4px', transform: 'translateX(-50%)', backgroundColor: '#8197de00', boxShadow: '0 4px 10px #eeeeee88' }"
+        :subHoverStyle="{ width: '100%', backgroundColor: '#8197deb2' }"
+        :subSelectStyle="{ backgroundColor: '#7187ceb2', height: '4px' }"
       >
-        <h5>文档</h5>
+        <h5>组 件</h5>
       </list-item>
       <list-item
         class="header-list-item"
         group="header"
-        URL="/components"
-        :subHoverStyle="{ position: 'absolute', left: '0', top: '0', backgroundColor: '#8197deb2', width: '100%', height: '4px' }"
-        :subSelectStyle="{ position: 'absolute', left: '0', top: '0', backgroundColor: '#8197deb2', width: '100%', height: '4px' }"
+        URL="/documents"
+        :subNormalStyle="{ position: 'absolute', left: '50%', top: '0', width: '0', height: '4px', transform: 'translateX(-50%)', backgroundColor: '#8197de00', boxShadow: '0 4px 10px #eeeeee88'  }"
+        :subHoverStyle="{ width: '100%', backgroundColor: '#8197deb2' }"
+        :subSelectStyle="{ backgroundColor: '#7187ceb2', height: '4px' }"
       >
-        <h5>组件</h5>
+        <h5>文 档</h5>
       </list-item>
     </template>
   </header-menu>
@@ -84,16 +86,5 @@ export default class App extends Vue {}
   padding-left: 10px;
   padding-right: 10px;
   cursor: pointer;
-
-  // &::after {
-  //   position: absolute;
-  //   left: 0;
-  //   top: 0;
-  //   width: 100%;
-  //   height: 4px;
-  //   background: blue;
-  //   content: ".";
-  //   color: transparent;
-  // }
 }
 </style>
