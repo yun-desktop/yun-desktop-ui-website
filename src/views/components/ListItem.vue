@@ -3,28 +3,22 @@
     class="list-item"
     ref="list-item" 
     @click="goPage"
-    :style="{
-      ...(isHover ? hoverStyle : {}),
-      ...(isSelected ? selectStyle : {})
-    }"
   >
     <slot ref="list-item"></slot>
-      <div
-        ref="sub-ele"
-        v-if="true"
-        class="sub-ele"
-        :style="{
-          ...subNormalStyle,
-          ...(isSelected ? subSelectStyle : {})
-        }"
-      >
-      </div>
+    <div
+      ref="sub-ele"
+      v-if="true"
+      class="sub-ele"
+      :style="{
+        ...subNormalStyle,
+        ...(isSelected ? subSelectStyle : {})
+      }"
+    >
+    </div>
   </li>
 </template>
 
 <script lang="ts">
-import { StyleValue } from '@vue/runtime-dom'
-import { Properties } from 'csstype'
 import { Vue, Prop, Options, Watch } from 'vue-property-decorator'
 
 @Options({})
@@ -37,15 +31,15 @@ export default class ListItem extends Vue {
   /** 所属List */
   @Prop({ type: String, default: 'default' }) group!: string
   /** 鼠标上浮的样式 */
-  @Prop({ default: {} }) hoverStyle: StyleValue = {}
+  @Prop({ default: {} }) hoverStyle: Keyframe = {}
   /** 被选中时的样式 */
-  @Prop({ default: {} }) selectStyle: StyleValue = {}
+  @Prop({ default: {} }) selectStyle: Keyframe = {}
   /** 是否有子元素 */
   @Prop({ type: Boolean, default: false }) isSubEle!: boolean
   /** 子元素鼠标上浮样式 */
   @Prop({ default: {} }) subHoverStyle: Keyframe = {}
   /** 子元选中样式 */
-  @Prop({ default: {} }) subSelectStyle: StyleValue = {}
+  @Prop({ default: {} }) subSelectStyle: Keyframe = {}
   /** 自元素常态样式 */
   @Prop({ default: {} }) subNormalStyle: Keyframe = {}
 
@@ -63,6 +57,8 @@ export default class ListItem extends Vue {
   /** 当前组被选中的Item的URL */
   selectPageURL: string = ''
   /** 子元素上浮展现动画 */
+  hoverAnimation: Animation | null = null
+    /** 子元素上浮展现动画 */
   subHoverAnimation: Animation | null = null
   
 
@@ -72,23 +68,37 @@ export default class ListItem extends Vue {
     if(this.isSelected) return
 
     if(val) {
-      // 展现动画
-      if(this.subHoverAnimation) {
-        this.subHoverAnimation.pause()
-        this.subHoverAnimation.playbackRate = 1
-        this.subHoverAnimation.play()
-      } else {
-        this.subHoverAnimation = ele.animate([this.subHoverStyle], { duration: 200, fill: 'forwards' })
-      }
+      this.hoverShowAnimation()
     } else {
-      // 消失动画
-      if(!this.subHoverAnimation) {
-        this.subHoverAnimation = ele.animate([this.subHoverStyle], { duration: 200, fill: 'forwards' })
-      }
-      this.subHoverAnimation.pause()
-      this.subHoverAnimation.playbackRate = -1
-      this.subHoverAnimation.play()
+      this.hoverHideAnimation()
     }
+  }
+
+  /** 鼠标上浮显现动画 */
+  hoverShowAnimation() {
+    const ele = this.$refs['list-item'] as HTMLElement
+    const subEle = this.$refs['sub-ele'] as HTMLElement
+    this.bindAnimation(ele, 'hoverAnimation', this.hoverStyle)
+    this.bindAnimation(subEle, 'subHoverAnimation', this.subHoverStyle)
+  }
+
+  /** 鼠标上浮隐藏动画 */
+  hoverHideAnimation() {
+    const ele = this.$refs['list-item'] as HTMLElement
+    const subEle = this.$refs['sub-ele'] as HTMLElement
+    this.bindAnimation(ele, 'hoverAnimation', this.hoverStyle, -1)
+    this.bindAnimation(subEle, 'subHoverAnimation', this.subHoverStyle, -1)
+  }
+
+  /** 绑定一个动画 */
+  bindAnimation( ele: HTMLElement, carrier: 'hoverAnimation' | 'subHoverAnimation', animation: Keyframe, rate: number = 1 ) {
+    let animationCarrier = this[carrier]
+    if(!animationCarrier) {
+      animationCarrier = this[carrier] = ele.animate([animation], { duration: 200, fill: 'forwards' })
+    }
+    animationCarrier.pause()
+    animationCarrier.playbackRate = rate
+    animationCarrier.play()
   }
 
   /** 跳转页面 */
@@ -102,8 +112,13 @@ export default class ListItem extends Vue {
   }
 
   /** 选中回调（当前List组某个Item被选中会通知全部Item） */
-  selectNoticeCallback(URL: string, group: string = 'default') {
-    if(this.group === group) this.selectPageURL = URL
+  selectNoticeCallback(this: ListItem, URL: string, group: string = 'default') {
+    if(this.group === group) {
+      this.selectPageURL = URL
+      if(this.URL !== URL) {
+        this.hoverHideAnimation()
+      }
+    }
   }
 
 
