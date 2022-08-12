@@ -3,6 +3,10 @@
     class="list-item"
     ref="list-item" 
     @click="goPage"
+    :style="{
+      ...normalStyle,
+      ...(isSelected ? selectStyle : {})
+    }"
   >
     <slot ref="list-item"></slot>
     <div
@@ -34,6 +38,8 @@ export default class ListItem extends Vue {
   @Prop({ default: {} }) hoverStyle: Keyframe = {}
   /** 被选中时的样式 */
   @Prop({ default: {} }) selectStyle: Keyframe = {}
+  /** 常态样式 */
+  @Prop({ default: {} }) normalStyle: Keyframe = {}
   /** 是否有子元素 */
   @Prop({ type: Boolean, default: false }) isSubEle!: boolean
   /** 子元素鼠标上浮样式 */
@@ -64,7 +70,6 @@ export default class ListItem extends Vue {
 
   @Watch('isHover')
   onIsHoverChanged(val: boolean, oldVal: boolean) {
-    const ele = this.$refs['sub-ele'] as HTMLElement
     if(this.isSelected) return
 
     if(val) {
@@ -94,7 +99,7 @@ export default class ListItem extends Vue {
   bindAnimation( ele: HTMLElement, carrier: 'hoverAnimation' | 'subHoverAnimation', animation: Keyframe, rate: number = 1 ) {
     let animationCarrier = this[carrier]
     if(!animationCarrier) {
-      animationCarrier = this[carrier] = ele.animate([animation], { duration: 200, fill: 'forwards' })
+      animationCarrier = this[carrier] = ele.animate([animation], { duration: 250, fill: 'forwards' })
     }
     animationCarrier.pause()
     animationCarrier.playbackRate = rate
@@ -114,15 +119,23 @@ export default class ListItem extends Vue {
   /** 选中回调（当前List组某个Item被选中会通知全部Item） */
   selectNoticeCallback(this: ListItem, URL: string, group: string = 'default') {
     if(this.group === group) {
-      this.selectPageURL = URL
-      if(this.URL !== URL) {
+      if(this.URL !== URL && this.selectPageURL === this.URL) {
         this.hoverHideAnimation()
+      }
+      this.selectPageURL = URL
+      if(URL === this.URL) {
+        console.log(this.selectStyle)
       }
     }
   }
 
 
   mounted() {
+    if(this.group === 'component') {
+      console.log(this.hoverStyle)
+      console.log(this.subHoverStyle)
+    }
+
     ListItem.allItems.push(this)
 
     // 监听鼠标是否在元素上方

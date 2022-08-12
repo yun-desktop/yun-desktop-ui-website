@@ -4,27 +4,46 @@
       <router-view></router-view>
     </div>
     <div class="line"></div>
-    <div class="com-list-wrap">
+    <ul class="com-list-wrap">
       <!-- Input -->
-      <div class="com-button" @click="$router.push({ name: 'input' })">
-        <h4>Input</h4>
-        <input style="cursor: pointer;" disabled type="text" placeholder="请输入内容">
-      </div>
-      <!-- Button -->
-      <div class="com-button" @click="$router.push({ name: 'button' })">
-        <h4>Button</h4>
-        <button style="pointer-events: none;" disabled>按钮</button>
-      </div>
+      <list-item
+        v-for="item of list"
+        :key="item.name"
+        class="component-list-item"
+        group="component"
+        :URL="item.URL"
+        :normalStyle="{ backgroundColor: 'transparent', width: '110px' }"
+        :hoverStyle="{backgroundColor: '#2e5efe28', width: '120px'}"
+        :selectStyle="{backgroundColor: '#2e5efe55 !important', width: '200px'}"
+      >
+        <h5>{{item.name}}</h5>
+        <component 
+          :is="item.name" disabled :value="item.message"
+          style="cursor: pointer; pointer-events: none;"
+        >
+          {{item.message}}
+        </component>
+      </list-item>
 
-    </div>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Options } from 'vue-property-decorator'
+import ListItem from '../components/ListItem.vue'
 
-@Options({})
-export default class Components extends Vue {}
+@Options({
+  components: {
+    ListItem
+  }
+})
+export default class Components extends Vue {
+  list = [
+    { name: 'input', URL: './input', message: '输入框'  },
+    { name: 'button', URL: './button', message: '按钮'  }
+  ]
+}
 </script>
 
 <style lang="scss" scoped>
@@ -37,13 +56,17 @@ export default class Components extends Vue {}
 
 .line {
   width: 10px;
-  height: 94%;
-  border-left: 2px solid $low-light;
+  height: 96%;
+  border-left: 1px solid $low-light;
 }
 
 .com-list-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   overflow: auto;
-  width: 170px;
+  padding-left: 10px;
+  width: 120px;
   height: 100%;
 }
 
@@ -53,20 +76,18 @@ export default class Components extends Vue {}
   height: 100%;
 }
 
-.com-button {
+.component-list-item {
+  overflow: hidden;
   display: flex;
   align-items: center;
   height: 32px;
+  background-color: $low-light;
+  border-radius: 8px 0 0 8px;
   cursor: pointer;
-  border-top-left-radius : 4px;
-  border-bottom-left-radius : 4px;
-
-  * {
+  
+  h5 {
+    margin-right: 4px;
     margin-left: 10px;
-  }
-
-  &:hover {
-    background: $low-light;
   }
 }
 </style>

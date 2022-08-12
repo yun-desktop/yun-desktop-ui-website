@@ -9,7 +9,7 @@
         :URL="item.URL"
         class="document-list-item"
         :hoverStyle="{transform: 'translateX(-10px)', backgroundColor: '#2e5efe28', width: '200px'}"
-        :selectStyle="{transform: 'translateX(-10px)', backgroundColor: '#2e5efe55', width: '200px'}"
+        :selectStyle="{transform: 'translateX(-10px)', backgroundColor: '#2e5efe55 !important', width: '200px'}"
         group="document"
       >
         <h5 style="margin: 0;">{{item.content}}</h5>
@@ -55,7 +55,7 @@ export default class Documents extends Vue {
 }
 
 .document-list {
-  width: 120px;
+  width: 110px;
   border-left: 1px solid $low-light;
   padding-left: 30px;
 }
